@@ -22,15 +22,15 @@ var checkToken = function (content, hashcash, token) {
   var hash = crypto.createHash('sha1').update(content).update(hashcash).digest('hex');
   return hash.indexOf(token) == 0;
 }
-var generate = function (content, strength, cb) {
-  var cash = -1;
+var generate = function (content, strength, start, cb) {
+  var cash = start > 0? start: -1;
   var token = generateToken(strength);
   while (!checkToken(content, ++cash, token)) {}
   return cash;
 };
 
-var ecHashcash = function (content, strength, cb) {
-  return generate(content, strength, cb);
+var ecHashcash = function (content, strength, start, cb) {
+  return generate(content, strength, start, cb);
 };
 ecHashcash.generateToken = generateToken;
 ecHashcash.generate = generate;
